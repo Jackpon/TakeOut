@@ -34,8 +34,8 @@ public class SessionKeyOpenId {
 	    Map<String,String> requestUrlParam = new HashMap<String, String>(  );
 	    String appid = "";//"wx6daeaed921f80da8";
 	    String secret = "";//"0dc4d0c46866b41af61a00cdf801a800";
-	    requestUrlParam.put( "appid","wx6daeaed921f80da8" );//小程序appId
-	    requestUrlParam.put( "secret","0dc4d0c46866b41af61a00cdf801a800" );
+	    requestUrlParam.put( "appid","" );//小程序appId
+	    requestUrlParam.put( "secret","" );//小程序secret
 	    requestUrlParam.put( "js_code",wxCode );//小程序端返回的code
 	    requestUrlParam.put( "grant_type","authorization_code" );//默认参数
 	 

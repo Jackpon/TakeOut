@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jackpon.mapper.BusinessMapper">
+    <!-- 获取goods -->
+    <select id="getBusinessGoods" parameterType="com.jackpon.po.Business"
+        resultType="com.jackpon.po.Good">
+        select * from goods where business_id=#{id}
+    </select>
+    <select id="checkLogin" parameterType="com.jackpon.po.Business"
+             resultType="com.jackpon.po.Business">
+        select * from businesses where name=#{name}
+    </select>
+    <select id="getAllBusiness" resultType="com.jackpon.po.Business">
+        select * from businesses
+    </select>
+    <insert id="businessRegister" parameterType="com.jackpon.po.Business" >
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO businesses (name, phone, address, password) VALUES (#{name}, #{phone}, #{address},#{password})
+    </insert>
+    <select id="getBusiness" parameterType="com.jackpon.po.Business"
+        resultType="com.jackpon.po.Business">
+        select * from businesses where id=#{id}
+    </select>
+    <select id="listOrders" parameterType="com.jackpon.po.Business"
+        resultType="com.jackpon.po.Order">
+        select * from orders where goods_id in (select id from goods where business_id=#{id})
+    </select>
+    <update id="updateBusiness" parameterType="com.jackpon.po.Business">
+         update businesses set address=#{address},phone=#{phone} where id=#{id}
+    </update>
+    <update id="updateBusinessPassword" parameterType="com.jackpon.po.Business">
+         update businesse set password=#{password} where id=#{id}
+    </update>
+    <!-- 取消订单 -->
+    <update id="cancelOrder" parameterType="com.jackpon.po.Order">
+         update orders set status=3 where id=#{id}
+    </update>
+    <!-- 接单 -->
+    <update id="acceptOrder" parameterType="com.jackpon.po.Order">
+         update orders set status=1 where id=#{id}
+    </update>
+    <!-- 录入商品 -->
+    <insert id="inputGood" parameterType="com.jackpon.po.Good" >
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO goods (name, business_id, price,
+         limit_num) VALUES (#{name}, #{business_id}, #{price},#{limit_num})
+    </insert>
+</mapper>

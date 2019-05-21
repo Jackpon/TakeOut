@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jackpon.mapper.CustomerMapper">
+    <!-- <select id="checkLogin" parameterType="com.jackpon.po.Customer"
+             resultType="com.jackpon.po.Customer">
+        select * from customers where name=#{name}
+    </select> --> 
+    <select id="findByOpenid" parameterType="java.lang.String"
+             resultType="com.jackpon.po.Customer">
+        select * from customer where openid=#{openid}
+    </select>
+    <!-- <insert id="CustomerRegister" parameterType="com.jackpon.po.Customer" >
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO customers (name, password, phone, 
+        address) VALUES (#{name}, #{password}, #{phone}, #{address})
+    </insert> -->
+    <insert id="insert" parameterType="com.jackpon.po.Customer" >
+        INSERT INTO customer (openid, createTime, sessionKey, 
+        balance,skey,phone,address,avatarUrl,gender,nickName) 
+        VALUES (#{openid}, #{createTime}, #{sessionKey}, #{balance},#{skey},#{phone},#{address},#{avatarUrl}
+        ,#{gender},#{nickName})
+    </insert>
+    <select id="getCustomer" parameterType="com.jackpon.po.Customer"
+        resultType="com.jackpon.po.Customer">
+        select * from customers where id=#{id}
+    </select>
+    <select id="listOrders" parameterType="com.jackpon.po.Customer"
+        resultType="com.jackpon.po.Order">
+        select * from orders where customer_id=#{openid} and state=2
+    </select>
+    <update id="updateCustomer" parameterType="com.jackpon.po.Customer">
+         update customers set address=#{address},phone=#{phone} where id=#{id}
+    </update>
+     <update id="updateCustomerSkey" parameterType="com.jackpon.po.Customer">
+         update customer set skey=#{skey} where openid=#{openid}
+    </update>
+    <update id="updateCustomerPassword" parameterType="com.jackpon.po.Customer">
+         update customers set password=#{password} where id=#{id}
+    </update>
+    <!-- 下订单 -->
+    <insert id="placeOrder" parameterType="com.jackpon.po.Order" >
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO orders (order_time, customer_id, goods_id,
+         number) VALUES (#{order_time}, #{customer_id}, #{goods_id}, #{number})
+    </insert>
+    <!-- 取消订单 -->
+    <update id="cancelOrder" parameterType="com.jackpon.po.Order">
+         update orders set status=3 where id=#{id}
+    </update>
+    <!-- 确认收货 -->
+    <update id="confirmReceipt" parameterType="com.jackpon.po.Order">
+         update orders set status=2 where id=#{id}
+    </update>
+</mapper>
